@@ -37,6 +37,8 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
      */
     protected void addInterceptors(InterceptorRegistry registry) {
         log.info("开始注册自定义拦截器...");
+        //拦截所有addPathPatterns的路径开头请求，排除掉 excludePathPatterns 的登录接口。
+        //校验每一次后台请求是否携带合法的 JWT 令牌，防止非法访问。
         registry.addInterceptor(jwtTokenAdminInterceptor)
                 .addPathPatterns("/admin/**")
                 .excludePathPatterns("/admin/employee/login");

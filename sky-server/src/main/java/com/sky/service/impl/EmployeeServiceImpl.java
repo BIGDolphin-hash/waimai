@@ -97,6 +97,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     @Override
     public PageResult pageQuery(EmployeePageQueryDTO employeePageQueryDTO) {
+        // 使用到的技术为 threadlocal 和 mybatis 拦截器
         PageHelper.startPage(employeePageQueryDTO.getPage(), employeePageQueryDTO.getPageSize());
         Page<Employee> page = employeeMapper.pageQuery(employeePageQueryDTO);
         long total = page.getTotal();
@@ -106,6 +107,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void startOrStop(Integer status, Long id) {
+        //使用了建造者模式
         Employee employee = Employee.builder().status(status).id(id).build();
         employeeMapper.update(employee);
     }
