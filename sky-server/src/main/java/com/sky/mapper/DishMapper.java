@@ -53,10 +53,10 @@ public interface DishMapper {
     /**
      * 根据主键删除菜品数据
      *
-     * @param id
+     * @param ids
      */
-    @Delete("delete from dish where id = #{id}")
-    void deleteById(Long id);
+
+    void deleteByIds(List<Long> ids);
 
     /**
      * 根据id动态修改菜品数据

@@ -9,6 +9,12 @@
         values (#{name}, #{categoryId}, #{price}, #{image}, #{description}, #{createTime}, #{updateTime}, #{createUser},
                 #{updateUser}, #{status})
     </insert>
+    <delete id="deleteByIds">
+        delete from dish where id in
+        <foreach collection="Ids" open="(" close=")" separator="," item="Id">
+            #{Id}
+        </foreach>
+    </delete>
 
     <select id="pageQuery" resultType="com.sky.vo.DishVO">
         select d.* , c.name as categoryName from dish d left outer join category c on d.category_id = c.id
@@ -41,7 +47,7 @@
         where id = #{id}
     </update>
 
-    <select id="list" resultType="Dish" parameterType="Dish">
+    <select id="list" resultType="com.sky.entity.Dish" parameterType="com.sky.entity.Dish">
         select * from dish
         <where>
             <if test="name != null">
