@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface DishMapper {
@@ -25,7 +26,7 @@ public interface DishMapper {
     Integer countByCategoryId(Long categoryId);
 
     /**
-     * 新增菜品和口味
+     * 插入菜品数据
      *
      * @param dish
      */
@@ -33,7 +34,7 @@ public interface DishMapper {
     void insert(Dish dish);
 
     /**
-     * 分页查询
+     * 菜品分页查询
      *
      * @param dishPageQueryDTO
      * @return
@@ -41,7 +42,8 @@ public interface DishMapper {
     Page<DishVO> pageQuery(DishPageQueryDTO dishPageQueryDTO);
 
     /**
-     * 根据 主键 id 查询
+     * 根据主键查询菜品
+     *
      * @param id
      * @return
      */
@@ -49,15 +51,41 @@ public interface DishMapper {
     Dish getById(Long id);
 
     /**
-     * 根据主键 id 删除
-     * @param ids
+     * 根据主键删除菜品数据
+     *
+     * @param id
      */
-    void deleteByIds(List<Long> ids);
+    @Delete("delete from dish where id = #{id}")
+    void deleteById(Long id);
 
     /**
-     * 修改菜品
+     * 根据id动态修改菜品数据
+     *
      * @param dish
      */
     @AutoFill(value = OperationType.UPDATE)
     void update(Dish dish);
+
+    /**
+     * 动态条件查询菜品
+     *
+     * @param dish
+     * @return
+     */
+    List<Dish> list(Dish dish);
+
+    /**
+     * 根据套餐id查询菜品
+     * @param setmealId
+     * @return
+     */
+    @Select("select a.* from dish a left join setmeal_dish b on a.id = b.dish_id where b.setmeal_id = #{setmealId}")
+    List<Dish> getBySetmealId(Long setmealId);
+
+    /**
+     * 根据条件统计菜品数量
+     * @param map
+     * @return
+     */
+    Integer countByMap(Map map);
 }
